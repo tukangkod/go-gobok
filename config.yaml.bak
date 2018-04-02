@@ -1,0 +1,8 @@
+username:
+password:
+database:
+
+grpc:
+  network: tcp
+  host:
+  port: 50051

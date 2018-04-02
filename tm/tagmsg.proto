@@ -6,7 +6,7 @@ option go_package = "tm";
 // Put Service API consists of a single service which returns a message.
 package tagmsg;
 
-// Message represents a simple message sent to the Put service.
+// Put Request parameters.
 message PutRequest {
     // Client IP represents the message identifier.
     string client_ip = 1;
@@ -18,14 +18,47 @@ message PutRequest {
     string message = 4;
 }
 
+// Message for Put Response from Put Request.
 message PutResponse {
-    // The response message.
-    string response_msg = 1;
+    // The request saved.
+    bool response_msg = 1;
+}
+
+// Message for Search Request.
+message SearchRequest {
+    // Client IP represents the message identifier.
+    string client_ip = 1;
+    // Server IP represents the message identifier.
+    string server_ip = 2;
+    // Tags.
+    map<string, string> tags = 3;
+}
+
+// Message Collection of Response for Search Request.
+message SearchResponse {
+    repeated SearchResult searchResult = 1;
+}
+
+// Search Request Result
+message SearchResult {
+    // Client IP represents the message identifier.
+    string client_ip = 1;
+    // Server IP represents the message identifier.
+    string server_ip = 2;
+    // Tags.
+    map<string, string> tags = 3;
+    // The message to be saved.
+    string message = 4;
 }
 
 // Put service responds to incoming put requests.
 service TagMsgService {
-    // Put method receives a simple message and returns it.
+    // Put method receives a PutRequest parameter.
     // The message posted as the id parameter will also be returned.
-    rpc Put (PutRequest) returns (PutResponse) {}
+    rpc Put (PutRequest) returns (PutResponse) {
+    }
+
+    // Search method receive SearchRequest parameter
+    rpc Search (SearchRequest) returns (SearchResponse) {
+    }
 }
