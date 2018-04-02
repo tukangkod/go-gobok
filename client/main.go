@@ -35,7 +35,7 @@ func main() {
 		utils.Log.Fatalf("not connected: %v", err)
 	}
 	defer conn.Close()
-	c := tm.NewPutServiceClient(conn)
+	c := tm.NewTagMsgServiceClient(conn)
 
 	// Contact the server and print out its response.
 	var clientIp, serverIp, msg string

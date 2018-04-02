@@ -24,7 +24,7 @@ message PutResponse {
 }
 
 // Put service responds to incoming put requests.
-service PutService {
+service TagMsgService {
     // Put method receives a simple message and returns it.
     // The message posted as the id parameter will also be returned.
     rpc Put (PutRequest) returns (PutResponse) {}

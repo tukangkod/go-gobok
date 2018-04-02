@@ -11,8 +11,7 @@ import (
 
 type putServer struct{}
 
-func newTagMsgServer() tm.PutServiceServer {
-	//utils.GetSugarLogger().Infof(utils.LogTemplate(), utils.GetFunctionName(newTagMsgServer()))
+func newTagMsgServer() tm.TagMsgServiceServer {
 	return new(putServer)
 }
 
@@ -42,7 +41,7 @@ func Run() error {
 	utils.Log.Infof(utils.LogTemplate(), fnName, "New Server Success ")
 
 	utils.Log.Infof(utils.LogTemplate(), fnName, "RegisterPutServiceServer")
-	tm.RegisterPutServiceServer(server, newTagMsgServer())
+	tm.RegisterTagMsgServiceServer(server, newTagMsgServer())
 
 	utils.Log.Infof(utils.LogTemplate(), fnName, "Serve")
 	if err := server.Serve(listen); err != nil {
