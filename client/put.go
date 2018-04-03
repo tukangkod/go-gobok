@@ -12,6 +12,9 @@ import (
 )
 
 // client put
+// cli example:
+// $ client/put.go 0.0.0.0 "" "a=b&c=d" "message 1"
+// $ client/put.go "" 0.0.0.0 "e=f&g=h" "message 2"
 func main() {
 	utils.NewLog()
 	utils.InitConfig()

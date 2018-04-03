@@ -64,3 +64,25 @@ func SaveTagMsg(msg *tm.PutRequest) error {
 	utils.Log.Infof(utils.LogTemplate(), fnName, "Saved")
 	return nil
 }
+
+func SearchTagMsg(msg *tm.SearchRequest) ([]TagMsg, error) {
+	fnName := utils.GetFunctionName(SearchTagMsg)
+
+	var tagmsg []TagMsg
+
+	err := db.Model(&tagmsg).
+	WhereGroup(func(q *orm.Query) (*orm.Query, error) {
+		q = q.WhereOr("client_ip = ?", msg.ClientIp).
+			WhereOr("server_ip = ?", msg.ServerIp).
+			WhereOr("tags @> ?", msg.Tags)
+		return q, nil
+	}).Select()
+
+	if err != nil {
+		utils.Log.Errorf(utils.ErrTemplate(), fnName, err)
+		return nil, err
+	}
+
+	utils.Log.Infof(utils.LogTemplate(), fnName, "Query Success for data :", msg)
+	return tagmsg, nil
+}

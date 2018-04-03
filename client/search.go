@@ -12,6 +12,7 @@ import (
 )
 
 // client search
+// client/search.go "" "" "a=b"
 func main() {
 	utils.NewLog()
 	utils.InitConfig()

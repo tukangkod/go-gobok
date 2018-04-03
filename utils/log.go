@@ -19,7 +19,6 @@ func GetFunctionName(i interface{}) string {
 	return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
 }
 
-
 func LogTemplate() string {
 	return "[%s] : %s"
 }

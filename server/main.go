@@ -31,16 +31,16 @@ func (s *tagmsgServer) Put(ctx context.Context, msg *tm.PutRequest) (*tm.PutResp
 }
 
 // Search TagMsg via SearchRequest
-// todo - search function
 func (s *tagmsgServer) Search(ctx context.Context, msg *tm.SearchRequest) (*tm.SearchResponse, error) {
-	client_ip := "0.0.0.0"
-	server_ip := "0.0.0.0"
-	tags := make(map[string]string)
-	message := "this is it"
+	tagmsg, err := SearchTagMsg(msg)
+	if err != nil {
+		utils.Log.Errorf(utils.ErrTemplate(), "Search", err)
+	}
 
 	result := make([]*tm.SearchResult, 0)
-	result = append(result, &tm.SearchResult{ClientIp: client_ip, ServerIp: server_ip, Tags: tags, Message: message})
-	result = append(result, &tm.SearchResult{ClientIp: client_ip, ServerIp: server_ip, Tags: tags, Message: message})
+	for _, data := range tagmsg {
+		result = append(result, &tm.SearchResult{ClientIp: data.ClientIp, ServerIp: data.ServerIp, Tags: data.Tags, Message: data.Message})
+	}
 
 	return &tm.SearchResponse{SearchResult: result}, nil
 }
