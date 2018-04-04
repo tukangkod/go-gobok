@@ -82,6 +82,17 @@ func TestTagMapMultipleAmpAndEqualOnlyTag(t *testing.T) {
 }
 
 // MarshalMsg
+// Empty
+func TestMarshalMsgEmptyTag(t *testing.T) {
+	msg := map[string]string(map[string]string{})
+
+	actualResult := utils.MarshalMsg(msg)
+	expectedResult := "{}"
+
+	assert.Equal(t, expectedResult, actualResult)
+}
+
+// Single
 func TestMarshalMsgSingleTag(t *testing.T) {
 	msg := map[string]string(map[string]string{"a": "b"})
 
@@ -91,6 +102,7 @@ func TestMarshalMsgSingleTag(t *testing.T) {
 	assert.Equal(t, expectedResult, actualResult)
 }
 
+// Multiple
 func TestMarshalMsgMultipleTag(t *testing.T) {
 	msg := map[string]string(map[string]string{"a": "b", "c": "d", "e": "f", "g": "h", "i": "j", "k": "l"})
 

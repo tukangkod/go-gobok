@@ -21,7 +21,7 @@ func (s *tagmsgServer) Put(ctx context.Context, msg *tm.PutRequest) (*tm.PutResp
 	utils.Log.Infof(utils.LogTemplate(), "main.Put", "Run")
 
 	marshalMsg := utils.MarshalMsg(msg)
-	utils.Log.Infof(utils.LogTemplate(), "main.Put", "Data: " + marshalMsg)
+	utils.Log.Infof(utils.LogTemplate(), "main.Put", "Data: "+marshalMsg)
 
 	err := SaveTagMsg(msg)
 	if err != nil {

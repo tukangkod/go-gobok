@@ -11,9 +11,12 @@ import (
 	"github.com/spf13/viper"
 )
 
-// client search
+// client search - cli
 // client/search.go <ClientIp> <ServerIp> <tag>
+// client/search.go // search everything
 // client/search.go "" "" "a=b"
+// client/search.go "" "" "a=b&c=d"
+// client/search.go "" "" "a=b&c=d"
 func main() {
 	utils.NewLog()
 	utils.InitConfig()

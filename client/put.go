@@ -11,10 +11,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-// client put
+// client put - cli
 // cli example:
 // $ client/put.go 0.0.0.0 "" "a=b&c=d" "message 1"
 // $ client/put.go "" 0.0.0.0 "e=f&g=h" "message 2"
+// $ client/put.go "" "" "i=j&k=l" "message 3"
 func main() {
 	utils.NewLog()
 	utils.InitConfig()
