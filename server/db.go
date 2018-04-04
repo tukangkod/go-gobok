@@ -65,24 +65,39 @@ func SaveTagMsg(msg *tm.PutRequest) error {
 	return nil
 }
 
+// search tag msg using SearchRequest{}
 func SearchTagMsg(msg *tm.SearchRequest) ([]TagMsg, error) {
 	fnName := utils.GetFunctionName(SearchTagMsg)
 
 	var tagmsg []TagMsg
 
 	err := db.Model(&tagmsg).
-	WhereGroup(func(q *orm.Query) (*orm.Query, error) {
-		q = q.WhereOr("client_ip = ?", msg.ClientIp).
-			WhereOr("server_ip = ?", msg.ServerIp).
-			WhereOr("tags @> ?", msg.Tags)
-		return q, nil
-	}).Select()
+		WhereGroup(func(q *orm.Query) (*orm.Query, error) {
+			q = q.Where("1 = 1")
+			if msg.ClientIp != "" {
+				q = q.Where("client_ip = ?", msg.ClientIp)
+			}
+			if msg.ServerIp != "" {
+				q = q.Where("server_ip = ?", msg.ServerIp)
+			}
+			if msg.Tags != nil {
+				q = q.WhereGroup(func(q2 *orm.Query) (*orm.Query, error) {
+					for k, v := range msg.Tags {
+						q2 = q2.WhereOr("tags->>? = ?", k, v)
+					}
+					return q2, nil
+				})
+			}
+
+			return q, nil
+		}).
+		Select()
 
 	if err != nil {
 		utils.Log.Errorf(utils.ErrTemplate(), fnName, err)
 		return nil, err
 	}
 
-	utils.Log.Infof(utils.LogTemplate(), fnName, "Query Success for data :", msg)
+	utils.Log.Infof(utils.LogTemplate(), fnName, "Query Success for data :", utils.MarshalMsg(msg))
 	return tagmsg, nil
 }

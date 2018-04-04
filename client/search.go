@@ -12,6 +12,7 @@ import (
 )
 
 // client search
+// client/search.go <ClientIp> <ServerIp> <tag>
 // client/search.go "" "" "a=b"
 func main() {
 	utils.NewLog()
@@ -26,19 +27,26 @@ func main() {
 	defer conn.Close()
 	c := tm.NewTagMsgServiceClient(conn)
 
-	// Contact the server and print out its response.
 	var clientIp, serverIp string
 	var tags map[string]string
 
-	if len(os.Args) > 1 {
-		clientIp = os.Args[1]
-		serverIp = os.Args[2]
-		tags = utils.TagMap(os.Args[3])
+	if len(os.Args) == 4 {
+		if os.Args[1] != "" {
+			clientIp = os.Args[1]
+		}
+		if os.Args[2] != "" {
+			serverIp = os.Args[2]
+		}
+		if os.Args[3] != "" {
+			tags = utils.TagMap(os.Args[3])
+		}
 	}
+
 	r, err := c.Search(context.Background(), &tm.SearchRequest{ClientIp: clientIp, ServerIp: serverIp, Tags: tags})
 	if err != nil {
 		utils.Log.Fatalf("could not put: %v", err)
 	}
 
 	fmt.Printf(utils.MarshalMsg(r.SearchResult))
+	os.Exit(0)
 }
