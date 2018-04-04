@@ -12,10 +12,18 @@ func TagMap(s string) (map[string]string) {
 	var ss []string
 
 	m = make(map[string]string)
+
+	if s == "" {
+		return m
+	}
+
 	ss = strings.Split(s, "&")
 	for _, pair := range ss {
 		z := strings.Split(pair, "=")
-		m[z[0]] = z[1]
+
+		if len(z) == 2 {
+			m[z[0]] = z[1]
+		}
 	}
 	return m
 }
