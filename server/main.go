@@ -7,6 +7,7 @@ import (
 	"github.com/tukangkod/go-gobok/tm"
 	"github.com/tukangkod/go-gobok/utils"
 	"github.com/spf13/viper"
+	"os"
 )
 
 type tagmsgServer struct{}
@@ -32,15 +33,23 @@ func (s *tagmsgServer) Put(ctx context.Context, msg *tm.PutRequest) (*tm.PutResp
 
 // Search TagMsg via SearchRequest
 func (s *tagmsgServer) Search(ctx context.Context, msg *tm.SearchRequest) (*tm.SearchResponse, error) {
+	fnName := "main.Search"
+	utils.Log.Infof(utils.LogTemplate(), fnName, "Run")
+
+	utils.Log.Infof(utils.LogTemplate(), fnName, "Search Data: ", utils.MarshalMsg(msg))
+
 	tagmsg, err := SearchTagMsg(msg)
 	if err != nil {
-		utils.Log.Errorf(utils.ErrTemplate(), "Search", err)
+		utils.Log.Errorf(utils.ErrTemplate(), fnName, err)
+		os.Exit(1)
 	}
 
+	utils.Log.Infof(utils.LogTemplate(), fnName, "Building Result")
 	result := make([]*tm.SearchResult, 0)
 	for _, data := range tagmsg {
 		result = append(result, &tm.SearchResult{ClientIp: data.ClientIp, ServerIp: data.ServerIp, Tags: data.Tags, Message: data.Message})
 	}
+	utils.Log.Infof(utils.LogTemplate(), fnName, "Showing Result: ", utils.MarshalMsg(result))
 
 	return &tm.SearchResponse{SearchResult: result}, nil
 }
